@@ -22,6 +22,7 @@ pub struct Campaign {
     pub ending_timestamp: i64,
     pub minimum_deposit_amount: u64,
     pub raised_amount: u64,
+    pub is_withdrawn: bool,
     pub is_locked: bool,
 
     pub campaign_authority: Pubkey,

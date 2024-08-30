@@ -41,6 +41,7 @@ pub fn handler(ctx: Context<InitializeCampaign>, args: InitializeCampaignArgs) -
     campaign.ending_timestamp = Clock::get()?.unix_timestamp + args.campaign_duration;
     campaign.minimum_deposit_amount = args.min_deposit_amount;
     campaign.is_locked = false;
+    campaign.is_withdrawn = false;
 
     campaign.campaign_authority = ctx.accounts.campaign_authority.key();
     campaign.campaign_authority_bump = ctx.bumps.campaign_authority;

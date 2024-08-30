@@ -12,3 +12,6 @@ pub use set_platform_fee::*;
 
 pub mod fund_to_campaign;
 pub use fund_to_campaign::*;
+
+pub mod withdraw_from_campaign;
+pub use withdraw_from_campaign::*;

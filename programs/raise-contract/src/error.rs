@@ -10,4 +10,10 @@ pub enum ErrorCode {
     CampaignGoalReached,
     #[msg("CampaignEnded")]
     CampaignEnded,
+    #[msg("CampaignFundAlreadyWithdrawn")]
+    CampaignFundAlreadyWithdrawn,
+    #[msg("CampaignGoalNotReached")]
+    CampaignGoalNotReached,
+    #[msg("CampaignFundDurationNotEnded")]
+    CampaignFundDurationNotEnded,
 }

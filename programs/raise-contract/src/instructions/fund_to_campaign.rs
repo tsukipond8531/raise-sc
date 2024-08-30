@@ -12,17 +12,18 @@ pub struct FundToCampaign<'info> {
     #[account(
         seeds = [b"campaign", creator.key().as_ref()],
         bump,
+        has_one = creator
         )]
     pub campaign: Account<'info, Campaign>,
     /// CHECK:
     #[account(
         seeds = [b"campaign_authority"],
-        bump
+        bump = campaign.campaign_authority_bump,
         )]
     pub campaign_authority: AccountInfo<'info>,
 
     #[account(
-        init,
+        init_if_needed,
         seeds = [b"donor", campaign.key().as_ref(), donor.key().as_ref()],
         bump,
         payer = donor,
