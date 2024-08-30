@@ -16,7 +16,7 @@ pub struct InitializePlatform<'info> {
     pub platform: Account<'info, Platform>,
     /// CHECK:
     #[account(
-        seeds = [b"platfrom_authority"],
+        seeds = [b"platform_authority"],
         bump
         )]
     pub platform_authority: AccountInfo<'info>,
@@ -31,12 +31,12 @@ pub struct InitializePlatformArgs {
 
 pub fn handler(ctx: Context<InitializePlatform>, args: InitializePlatformArgs) -> Result<()> {
     let platform = &mut ctx.accounts.platform;
-    
+
     platform.admin = ctx.accounts.admin.key();
     platform.fee = args.fee;
     platform.fee_accumulated = 0;
     platform.authority = ctx.accounts.platform_authority.key();
-    platform.authority_bump = *ctx.bumps.platform_authority;
+    platform.authority_bump = ctx.bumps.platform_authority;
 
     Ok(())
 }

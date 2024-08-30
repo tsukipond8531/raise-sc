@@ -8,22 +8,24 @@ pub struct Platform {
     pub fee_accumulated: u64,
 
     pub authority: Pubkey,
-    pub authority_bump: u8
+    pub authority_bump: u8,
 }
 
 impl Platform {
     pub const LEN: usize = std::mem::size_of::<Platform>() + 8;
-    
 }
 
 #[account]
 pub struct Campaign {
     pub creator: Pubkey,
-    pub goal: Pubkey,
+    pub goal: u64,
     pub ending_timestamp: i64,
     pub minimum_deposit_amount: u64,
     pub raised_amount: u64,
     pub is_locked: bool,
+
+    pub campaign_authority: Pubkey,
+    pub campaign_authority_bump: u8,
 }
 
 impl Campaign {
@@ -38,7 +40,7 @@ impl Campaign {
         amount: u64,
     ) -> Result<()> {
         let authority_seeds: &[&[&[u8]]] =
-            &[&[b"campaign_authority", &[self.campaign_authority_bump]]];
+            &[&[b"platform_authority", &[self.campaign_authority_bump]]];
 
         let context = CpiContext::new(
             token_program,
@@ -73,7 +75,6 @@ impl Campaign {
     }
 }
 
-
 #[account]
 pub struct Donor {
     pub donor: Pubkey,
@@ -85,5 +86,4 @@ pub struct Donor {
 
 impl Donor {
     pub const LEN: usize = std::mem::size_of::<Donor>() + 8;
-    
 }

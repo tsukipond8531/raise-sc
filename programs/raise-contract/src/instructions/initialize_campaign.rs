@@ -1,6 +1,6 @@
 use anchor_lang::prelude::*;
 
-use crate::{Campaign, MIN_CAMPAIGN_DURATION};
+use crate::{Campaign, MIN_CAMPAIGN_DURATION, error::ErrorCode};
 
 #[derive(Accounts)]
 pub struct InitializeCampaign<'info> {
@@ -16,10 +16,10 @@ pub struct InitializeCampaign<'info> {
     pub campaign: Account<'info, Campaign>,
     /// CHECK:
     #[account(
-        seeds = [b"platfrom_authority"],
+        seeds = [b"campaign_authority"],
         bump
         )]
-    pub platform_authority: AccountInfo<'info>,
+    pub campaign_authority: AccountInfo<'info>,
 
     pub system_program: Program<'info, System>,
 }
@@ -27,7 +27,7 @@ pub struct InitializeCampaign<'info> {
 #[derive(AnchorSerialize, AnchorDeserialize)]
 pub struct InitializeCampaignArgs {
     pub goal: u64,
-    pub campaign_duration: u64, // in seconds
+    pub campaign_duration: i64, // in seconds
     pub min_deposit_amount: u64, // in lamport
 }
 
@@ -41,6 +41,9 @@ pub fn handler(ctx: Context<InitializeCampaign>, args: InitializeCampaignArgs) -
     campaign.ending_timestamp = Clock::get()?.unix_timestamp + args.campaign_duration;
     campaign.minimum_deposit_amount = args.min_deposit_amount;
     campaign.is_locked = false;
+
+    campaign.campaign_authority = ctx.accounts.campaign_authority.key();
+    campaign.campaign_authority_bump = ctx.bumps.campaign_authority;
 
     Ok(())
 }

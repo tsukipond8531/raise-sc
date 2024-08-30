@@ -9,3 +9,6 @@ pub use set_platform_admin::*;
 
 pub mod set_platform_fee;
 pub use set_platform_fee::*;
+
+pub mod fund_to_campaign;
+pub use fund_to_campaign::*;
