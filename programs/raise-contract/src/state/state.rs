@@ -24,9 +24,6 @@ pub struct Campaign {
     pub minimum_deposit_amount: u64,
     pub raised_amount: u64,
     pub is_locked: bool,
-
-    pub campaign_authority: Pubkey,
-    pub campaign_authority_bump: u8,
 }
 
 impl Campaign {
