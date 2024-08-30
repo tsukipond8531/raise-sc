@@ -16,4 +16,6 @@ pub enum ErrorCode {
     CampaignGoalNotReached,
     #[msg("CampaignFundDurationNotEnded")]
     CampaignFundDurationNotEnded,
+    #[msg("CampaignIsOnProgress")]
+    CampaignIsOnProgress,
 }
