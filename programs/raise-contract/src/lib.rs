@@ -15,7 +15,7 @@ declare_id!("DWeQB5bkbGG8VWQxQHjqijw5jnTyxxUe75j8W3fzAgyq");
 pub mod raise_contract {
     use super::*;
 
-    pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
-        initialize::handler(ctx)
+    pub fn initialize_platform(ctx: Context<Initialize>) -> Result<()> {
+        initialize_platform::handler(ctx)
     }
 }
