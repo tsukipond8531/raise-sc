@@ -43,6 +43,7 @@ pub fn handler(ctx: Context<InitializeCampaign>, args: InitializeCampaignArgs) -
     campaign.is_locked = true;
     campaign.is_withdrawn = false;
 
+    campaign.bump = ctx.bumps.campaign;
     campaign.campaign_authority = ctx.accounts.campaign_authority.key();
     campaign.campaign_authority_bump = ctx.bumps.campaign_authority;
 

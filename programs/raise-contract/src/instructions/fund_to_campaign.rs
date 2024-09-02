@@ -7,6 +7,7 @@ use crate::{error::ErrorCode, Campaign, Donor};
 pub struct FundToCampaign<'info> {
     #[account(mut)]
     pub donor: Signer<'info>,
+    /// CHECK:
     #[account(mut)]
     pub creator: AccountInfo<'info>,
     #[account(
@@ -57,6 +58,7 @@ pub fn handler(ctx: Context<FundToCampaign>, args: FundToCampaignArgs) -> Result
         args.fund_amount,
     )?;
 
+    donor_info.donor_bump = ctx.bumps.donor_info;
     donor_info.donor = ctx.accounts.donor.key();
     donor_info.campaign = campaign.key();
     donor_info.amount += args.fund_amount;

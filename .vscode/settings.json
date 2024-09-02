@@ -1,7 +1,12 @@
 {
     "cSpell.words": [
+        "Blockhash",
+        "Keypair",
         "lamport",
         "lamports",
-        "platfrom"
+        "platfrom",
+        "Pubkey",
+        "solana",
+        "SYSVAR"
     ]
 }

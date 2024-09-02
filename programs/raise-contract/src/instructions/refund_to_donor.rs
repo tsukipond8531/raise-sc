@@ -7,6 +7,7 @@ use crate::{error::ErrorCode, Campaign, Donor};
 pub struct RefundToDonor<'info> {
     #[account(mut)]
     pub donor: Signer<'info>,
+    /// CHECK:
     #[account(mut)]
     pub creator: AccountInfo<'info>,
     #[account(
