@@ -233,15 +233,15 @@ export default class RaiseContractImpl {
     campaignDuration: BN, // in seconds
     minDepositAmount: BN, // in lamport
 
-    creator: PublicKey //payer
+    creator: Keypair //payer
   ): Promise<Result> {
     let platform = this.getPlatform()
     let platformAuthority = this.getPlatformAuthority()
-    let campaign = this.getCampaign(creator)
+    let campaign = this.getCampaign(creator.publicKey)
     let campaignAuthority = this.getCampaignAuthority()
 
     let accounts = {
-      creator,
+      creator: creator.publicKey,
       campaign,
       campaignAuthority,
       ...defaultProgramAccounts
@@ -256,6 +256,7 @@ export default class RaiseContractImpl {
     let txId = await this.program.methods
       .initializeCampaign(params)
       .accounts(accounts)
+      .signers([creator])
       .rpc()
 
     let latestBlockhash = await this.connection.getLatestBlockhash('finalized')
@@ -275,17 +276,17 @@ export default class RaiseContractImpl {
   public async fundToCampaign (
     fundAmount: BN,
 
-    donor: PublicKey, //payer
+    donor: Keypair, //payer
     creator: PublicKey
   ): Promise<Result> {
     let platform = this.getPlatform()
     let platformAuthority = this.getPlatformAuthority()
     let campaign = this.getCampaign(creator)
     let campaignAuthority = this.getCampaignAuthority()
-    let donorInfo = this.getDonor(campaign, donor)
+    let donorInfo = this.getDonor(campaign, donor.publicKey)
 
     let accounts = {
-      donor,
+      donor: donor.publicKey,
       creator,
       campaign,
       campaignAuthority,
@@ -300,6 +301,7 @@ export default class RaiseContractImpl {
     let txId = await this.program.methods
       .fundToCampaign(params)
       .accounts(accounts)
+      .signers([donor])
       .rpc()
 
     let latestBlockhash = await this.connection.getLatestBlockhash('finalized')
@@ -316,12 +318,12 @@ export default class RaiseContractImpl {
     }
   }
 
-  public async withdrawFromCampaign (creator: PublicKey): Promise<Result> {
-    let campaign = this.getCampaign(creator)
+  public async withdrawFromCampaign (creator: Keypair): Promise<Result> {
+    let campaign = this.getCampaign(creator.publicKey)
     let campaignAuthority = this.getCampaignAuthority()
 
     let accounts = {
-      creator,
+      creator: creator.publicKey,
       campaign,
       campaignAuthority,
       ...defaultProgramAccounts
@@ -330,6 +332,7 @@ export default class RaiseContractImpl {
     let txId = await this.program.methods
       .withdrawFromCampaign()
       .accounts(accounts)
+      .signers([creator])
       .rpc()
 
     let latestBlockhash = await this.connection.getLatestBlockhash('finalized')
