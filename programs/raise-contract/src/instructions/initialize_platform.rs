@@ -32,6 +32,7 @@ pub struct InitializePlatformArgs {
 pub fn handler(ctx: Context<InitializePlatform>, args: InitializePlatformArgs) -> Result<()> {
     let platform = &mut ctx.accounts.platform;
 
+    platform.bump = ctx.bumps.platform;
     platform.admin = ctx.accounts.admin.key();
     platform.fee = args.fee;
     platform.fee_accumulated = 0;

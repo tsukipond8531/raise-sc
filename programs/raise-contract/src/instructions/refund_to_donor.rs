@@ -5,8 +5,10 @@ use crate::{error::ErrorCode, Campaign, Donor};
 
 #[derive(Accounts)]
 pub struct RefundToDonor<'info> {
+    /// CHECK
     #[account(mut)]
-    pub donor: Signer<'info>,
+    pub donor: AccountInfo<'info>,
+    /// CHECK:
     #[account(mut)]
     pub creator: AccountInfo<'info>,
     #[account(

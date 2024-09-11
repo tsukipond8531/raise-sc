@@ -7,6 +7,7 @@ use crate::{error::ErrorCode, Campaign, Donor};
 pub struct FundToCampaign<'info> {
     #[account(mut)]
     pub donor: Signer<'info>,
+    /// CHECK:
     #[account(mut)]
     pub creator: AccountInfo<'info>,
     #[account(
@@ -44,24 +45,35 @@ pub fn handler(ctx: Context<FundToCampaign>, args: FundToCampaignArgs) -> Result
     let campaign = &mut ctx.accounts.campaign;
     let donor_info = &mut ctx.accounts.donor_info;
     let current_timestamp = Clock::get().unwrap().unix_timestamp;
-    
-    require!(args.fund_amount > campaign.minimum_deposit_amount, ErrorCode::FundAmountTooLow);
-    require!(campaign.goal < campaign.raised_amount, ErrorCode::CampaignGoalReached);
-    require!(campaign.ending_timestamp > current_timestamp, ErrorCode::CampaignEnded);
+    let donor = &mut ctx.accounts.donor;
+
+    require!(
+        args.fund_amount > campaign.minimum_deposit_amount,
+        ErrorCode::FundAmountTooLow
+    );
+    require!(
+        campaign.goal > campaign.raised_amount,
+        ErrorCode::CampaignGoalReached
+    );
+    require!(
+        campaign.ending_timestamp > current_timestamp,
+        ErrorCode::CampaignEnded
+    );
 
     campaign.transfer_tokens_from_user(
-        ctx.accounts.donor.to_account_info(),
+        donor.to_account_info(),
         campaign.to_account_info(),
-        ctx.accounts.campaign_authority.to_account_info(),
+        donor.to_account_info(),
         ctx.accounts.token_program.to_account_info(),
         args.fund_amount,
     )?;
 
+    donor_info.donor_bump = ctx.bumps.donor_info;
     donor_info.donor = ctx.accounts.donor.key();
     donor_info.campaign = campaign.key();
     donor_info.amount += args.fund_amount;
 
     campaign.raised_amount += args.fund_amount;
-    
+
     Ok(())
 }

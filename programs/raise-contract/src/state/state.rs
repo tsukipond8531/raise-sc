@@ -7,6 +7,7 @@ pub struct Platform {
     pub fee: u64,
     pub fee_accumulated: u64,
 
+    pub bump: u8,
     pub authority: Pubkey,
     pub authority_bump: u8,
 }
@@ -25,6 +26,7 @@ pub struct Campaign {
     pub is_withdrawn: bool,
     pub is_locked: bool,
 
+    pub bump: u8,
     pub campaign_authority: Pubkey,
     pub campaign_authority_bump: u8,
 }
